@@ -1,4 +1,4 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.features.productlist
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,7 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.cs4520.assignment4.R
 import com.cs4520.assignment4.databinding.ItemProductViewBinding
+import com.cs4520.assignment4.core.model.Product
 
 
 /*
@@ -58,7 +60,7 @@ class ProductAdapter(private val productList: List<Product>) :
         fun bind(product: Product) {
             productName.text = product.name
             productPrice.text =
-                itemView.context.getString(R.string.product_price_format, product.price.toDouble())
+                itemView.context.getString(R.string.product_price_format, product.price)
 
             // Handling for optional expiry date in Food products
             when (product.type) {

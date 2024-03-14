@@ -1,18 +1,18 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.core.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.cs4520.assignment4.core.model.ProductEntity
 
 @Dao
-interface ProductDAO {
+interface ProductDao {
     @Query("SELECT * FROM products")
-    fun getAllProducts(): LiveData<List<ProductEntity>>
+    fun getAllProducts(): List<ProductEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(product: List<ProductEntity>)
+    suspend fun insertAllProducts(product: List<ProductEntity>)
 
     @Query("DELETE FROM products")
     suspend fun deleteAllProducts()

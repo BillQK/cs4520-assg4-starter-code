@@ -1,4 +1,4 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.common
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()

@@ -1,4 +1,4 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.features.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cs4520.assignment4.R
 import com.cs4520.assignment4.databinding.FragmentLoginBinding
-import com.cs4520.assignment4.databinding.FragmentProductlistBinding
 
 
 /*

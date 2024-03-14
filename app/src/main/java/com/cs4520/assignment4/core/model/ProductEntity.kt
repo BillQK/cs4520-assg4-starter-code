@@ -1,8 +1,8 @@
-package com.cs4520.assignment4;
+package com.cs4520.assignment4.core.model
 
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "products")
 data class ProductEntity (
@@ -10,5 +10,4 @@ data class ProductEntity (
     val price : Double,
     val expiryDate: String?,
     val type: String
-
 )
