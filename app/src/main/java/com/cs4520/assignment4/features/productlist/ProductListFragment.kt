@@ -38,6 +38,7 @@ class ProductListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val recyclerview = binding.productRecyclerView
         recyclerview.layoutManager = LinearLayoutManager(context)
+        recyclerview.adapter = ProductAdapter(emptyList())
         setUpObserver()
     }
 

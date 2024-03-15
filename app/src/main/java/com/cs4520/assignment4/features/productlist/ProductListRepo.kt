@@ -46,9 +46,8 @@ class ProductListRepo(
         }
     }
 
-    private suspend fun saveProductsToDatabase(products: List<Product>) {
+    private suspend fun saveProductsToDatabase(products: List<Product>) =
         productDAO.insertAllProducts(products.mapToEntities())
-    }
 
     private suspend fun fetchProductsFromDatabase(): Result<List<Product>> =
         withContext(Dispatchers.IO) {
