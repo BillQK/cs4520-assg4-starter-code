@@ -20,7 +20,7 @@ specifying ProductAdapter.ProductViewHolder as its ViewHolder type.
 class ProductAdapter(
     private val onLoadMore: () -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-    private val products = mutableListOf<Product>()
+    private val products = LinkedHashSet<Product>()
     /*
     This method is called by the RecyclerView to create new ViewHolder instances.
      It inflates the product_recycler_view_row layout, which defines the appearance of each
@@ -38,7 +38,7 @@ class ProductAdapter(
     it calls bind() on the corresponding ProductViewHolder.
      */
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.bind(products[position])
+        holder.bind(products.elementAt(position))
 
         if (position == products.size - 1) { // Reached the end of the list
             onLoadMore()
@@ -48,9 +48,10 @@ class ProductAdapter(
     override fun getItemCount(): Int = products.size
 
     fun addProducts(newProducts: List<Product>) {
-        val insertPosition = products.size
+        val previousSize = products.size
         products.addAll(newProducts)
-        notifyItemRangeInserted(insertPosition, newProducts.size)
+        val newSize = products.size
+        notifyItemRangeInserted(previousSize, newSize - previousSize)
     }
     /*
     Represents a single item view and its metadata within the RecyclerView,
