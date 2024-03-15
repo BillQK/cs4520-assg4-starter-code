@@ -17,9 +17,10 @@ import com.cs4520.assignment4.core.model.Product
 It's a custom adapter that extends the generic RecyclerView.Adapter class,
 specifying ProductAdapter.ProductViewHolder as its ViewHolder type.
  */
-class ProductAdapter(private val productList: List<Product>) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-
+class ProductAdapter(
+    private val onLoadMore: () -> Unit
+) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+    private val products = mutableListOf<Product>()
     /*
     This method is called by the RecyclerView to create new ViewHolder instances.
      It inflates the product_recycler_view_row layout, which defines the appearance of each
@@ -37,12 +38,20 @@ class ProductAdapter(private val productList: List<Product>) :
     it calls bind() on the corresponding ProductViewHolder.
      */
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.bind(productList[position])
+        holder.bind(products[position])
 
+        if (position == products.size - 1) { // Reached the end of the list
+            onLoadMore()
+        }
     }
 
-    override fun getItemCount() = productList.size
+    override fun getItemCount(): Int = products.size
 
+    fun addProducts(newProducts: List<Product>) {
+        val insertPosition = products.size
+        products.addAll(newProducts)
+        notifyItemRangeInserted(insertPosition, newProducts.size)
+    }
     /*
     Represents a single item view and its metadata within the RecyclerView,
     allowing for item reuse and reducing the need for inflating new views.

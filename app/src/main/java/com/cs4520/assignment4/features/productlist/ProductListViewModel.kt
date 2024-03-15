@@ -14,16 +14,23 @@ class ProductListViewModel(private val repository: ProductListRepo) : ViewModel(
     private val _productList = MutableLiveData<Result<List<Product>>>()
     val productList: LiveData<Result<List<Product>>> = _productList
 
+    // Pagination state
+    private val currentPage = MutableLiveData(0)
+
     init {
-        fetchProducts()
+        fetchNextPage()
     }
 
-    private fun fetchProducts(page: Int? = null) {
+    fun fetchNextPage() {
         viewModelScope.launch {
-            val result = repository.getProducts(page)
-            _productList.postValue(result)
+            currentPage.value?.let { page ->
+                val result = repository.getProducts(page)
+                if (result is Result.Success) {
+                    currentPage.value = page + 1
+                }
+                _productList.value = result
+            }
         }
-
     }
 
 }

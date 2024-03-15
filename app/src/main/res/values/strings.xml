@@ -9,5 +9,7 @@
   <string name="fe">TextView</string>
   <string name="product_price_format">$ %.2f</string>
     <string name="No_Product_Available">No_Product_Available</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="api_error">Api Error</string>
+  <string name="no_product_available">No Product Available</string>
+  <!-- TODO: Remove or change this placeholder text -->
 </resources>

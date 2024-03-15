@@ -23,22 +23,30 @@ class ProductListFragment : Fragment() {
         val productRepo = ProductListRepo(productDAO, requireContext())
         ProductListViewModelFactory(productRepo)
     }
+
     private lateinit var binding: FragmentProductlistBinding
+    private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProductlistBinding.inflate(layoutInflater)
+        binding = FragmentProductlistBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerview = binding.productRecyclerView
-        recyclerview.layoutManager = LinearLayoutManager(context)
-        recyclerview.adapter = ProductAdapter(emptyList())
+
+        // Initialize the adapter with onLoadMore callback
+        productAdapter = ProductAdapter {
+            viewModel.fetchNextPage()
+        }
+
+        binding.productRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = productAdapter
+        }
+
         setUpObserver()
     }
 
@@ -51,7 +59,6 @@ class ProductListFragment : Fragment() {
                 is Result.Error -> {
                     handleError(result.exception)
                 }
-
                 is Result.Empty -> {
                     handleEmpty()
                 }
@@ -62,20 +69,24 @@ class ProductListFragment : Fragment() {
     private fun handleSuccess(products: List<Product>) {
         binding.progressBar.visibility = View.GONE
         binding.textViewNoProduct.visibility = View.GONE
-        val adapter = ProductAdapter(products)
-        binding.productRecyclerView.adapter = adapter
+
+        productAdapter.addProducts(products)
     }
 
     private fun handleError(exception: Exception) {
         binding.progressBar.visibility = View.GONE
+        if (productAdapter.itemCount == 0) {
+            binding.textviewApiError.visibility = View.VISIBLE
+        }
         Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_LONG).show()
     }
 
     private fun handleEmpty() {
         binding.progressBar.visibility = View.GONE
-        binding.textViewNoProduct.visibility = View.VISIBLE
+        if (productAdapter.itemCount == 0) {
+            binding.textViewNoProduct.visibility = View.VISIBLE
+        }
         Toast.makeText(context, "No product available", Toast.LENGTH_LONG).show()
     }
-
 
 }
