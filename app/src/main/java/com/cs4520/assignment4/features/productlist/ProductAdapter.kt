@@ -61,7 +61,6 @@ class ProductAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         private val productName: TextView = binding.productName
-
         private val productPrice: TextView = binding.productPrice
         private val productExpiryDate: TextView = binding.productExpiryDate
         private val productCardBackGroundColor: CardView = binding.productCardView
